@@ -1,20 +1,102 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+//#region Imports
+import React from 'react';
+import { useColorScheme } from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import MainScreen from './screens/MainScreen';
+import AddWeatherScreen from './screens/AddWeatherScreen';
+import InfoScreen from './screens/InfoScreen';
+import theme from './modules/theme';
+
+import {   
+  MD3DarkTheme, 
+  MD3LightTheme,
+  adaptNavigationTheme, 
+  Provider as PaperProvider,
+} from 'react-native-paper';
+
+import {
+  NavigationContainer,
+  DarkTheme as NavigationDarkTheme,
+  DefaultTheme as NavigationDefaultTheme,
+} from '@react-navigation/native';
+//#endregion
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
+  const colorScheme = useColorScheme(); // gets system theme mode
+
+  const { LightTheme, DarkTheme } = adaptNavigationTheme({
+    reactNavigationLight: NavigationDefaultTheme,
+    reactNavigationDark: NavigationDarkTheme,
+  });
+
+  const CombinedDefaultTheme = {
+    ...MD3LightTheme,
+    ...LightTheme,
+    colors: {
+      ...MD3LightTheme.colors,
+      ...LightTheme.colors,
+      ...theme.schemes.light,
+    },
+  };
+
+  const CombinedDarkTheme = {
+    ...MD3DarkTheme,
+    ...DarkTheme,
+    colors: {
+      ...MD3DarkTheme.colors,
+      ...DarkTheme.colors,
+      ...theme.schemes.dark,
+    },
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <PaperProvider theme={colorScheme == 'dark' ? CombinedDarkTheme : CombinedDefaultTheme}>
+      <NavigationContainer theme={colorScheme == 'dark' ? CombinedDarkTheme : CombinedDefaultTheme}>
+        <Stack.Navigator 
+          initialRouteName='Main' 
+          screenOptions={{
+            headerShown: true, 
+            headerShadowVisible: false, 
+            headerTransparent: true,
+            headerTitleAlign: 'center',
+          }}>
+          <Stack.Screen 
+            name="Main"
+            component={MainScreen}
+          />
+          <Stack.Screen
+            name="AddWeather"
+            component={AddWeatherScreen}
+            options={{
+              title: 'Add weather', 
+              headerShown: true, 
+              headerShadowVisible: true, 
+              headerTransparent: false,
+              headerTitleAlign: 'center',
+              headerStyle: {
+                backgroundColor: colorScheme == 'dark' ? theme.palettes.secondary[30] : theme.palettes.secondary[80]
+              } 
+            }}
+          />
+          <Stack.Screen 
+            name="InfoScreen"
+            component={InfoScreen}
+            options={{ 
+              title: 'App info', 
+              headerShown: true, 
+              headerShadowVisible: true, 
+              headerTransparent: false,
+              headerTitleAlign: 'center',
+              headerStyle: {
+                backgroundColor: colorScheme == 'dark' ? theme.palettes.secondary[30] : theme.palettes.secondary[80]
+              } 
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

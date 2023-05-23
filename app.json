@@ -1,30 +1,37 @@
 {
   "expo": {
-    "name": "weather-app",
+    "name": "Weather App",
     "slug": "weather-app",
-    "version": "1.0.0",
-    "orientation": "portrait",
+    "version": "0.0.1",
+    "orientation": "automatic",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#004f58"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.music-soul1-1.weather-app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "backgroundColor": "#004f58"
+      },
+      "package": "com.music_soul1_1.weatherapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "c632631e-dfcf-4cd0-a42e-d30408424c2c"
+      }
     }
   }
 }
