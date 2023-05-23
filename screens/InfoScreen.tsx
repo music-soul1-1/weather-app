@@ -76,7 +76,7 @@ export default function InfoScreen() {
               See app page on GitHub
             </Button>
             <Button 
-              onPress={() => Linking.openURL('https://github.com/music-soul1-1/weather-app/LICENSE.txt')}>
+              onPress={() => Linking.openURL('https://github.com/music-soul1-1/weather-app/blob/81dc418110ee80cbd69d61c900fc8440e8fc8497/LICENSE')}>
               MIT license
             </Button>
           </View>
