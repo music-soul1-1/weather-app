@@ -10,11 +10,13 @@ This app allows you to see the current weather and forecast for different cities
 2. Install the .apk.
 3. Enjoy :)
 
-If you found any problems that weren't mentioned in [release notes](https://github.com/music-soul1-1/weather-app#releasenotes), open an [issue](https://github.com/music-soul1-1/weather-app/issues).
+If you found any problems that weren't mentioned in [release notes](https://github.com/music-soul1-1/weather-app#release-notes), open an [issue](https://github.com/music-soul1-1/weather-app/issues).
 
 ## Screenshots
 
-
+![imgonline-com-ua-twotoone-MNYj3axfYyDZQdx (1)](https://github.com/music-soul1-1/weather-app/assets/72669184/a5971c8d-beeb-41bc-88ca-cf1c476fa1e9)
+![imgonline-com-ua-twotoone-5FYva890OG50O3kf (1)](https://github.com/music-soul1-1/weather-app/assets/72669184/34950c6d-4ecd-4534-8b55-55f61005b7e5)
+![imgonline-com-ua-twotoone-YTbfdz0SuwaGa7ED (1)](https://github.com/music-soul1-1/weather-app/assets/72669184/5a349d9b-ec7a-45e1-ab59-9aba818424d0)
 
 ## Roadmap
 
@@ -68,7 +70,7 @@ Note: app uses [React Native CLI](https://reactnative.dev/).
 
 ## License
 
-The Weather App is open-source and released under the [MIT License](https://opensource.org/licenses/MIT).
+The Weather App is open-source and released under the [MIT License](https://github.com/music-soul1-1/weather-app/blob/4e6a5fc8778606bd4ad1c18962f88a244dd562a4/LICENSE).
 
 ## Credits
 
