@@ -14,7 +14,6 @@ import {
 } from '@react-navigation/native';
 import { styles } from '../modules/styles';
 import theme from '../modules/theme';
-import * as Application from 'expo-application';
 
 //#endregion
 
@@ -59,7 +58,7 @@ export default function InfoScreen() {
               backgroundColor: colorScheme == 'dark' ? theme.palettes.secondary[30] : theme.palettes.secondary[90]
             }}>
             <Text style={colorScheme == 'dark' ? styles.darkText : styles.text}>
-              App version: v.{Application.nativeApplicationVersion}
+              App version: v.0.0.1
             </Text>
             <Text style={[
                 colorScheme == 'dark' ? styles.darkText : styles.text, 

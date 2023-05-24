@@ -1,9 +1,9 @@
 //#region Imports
 import React, { useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
 import {
   Text, View, 
   SafeAreaView, useColorScheme,
+  StatusBar,
 } from 'react-native';
 import { getLocation, getWeatherData } from '../modules/WeatherApiHandler';
 import {   
@@ -110,7 +110,7 @@ export default function AddWeatherScreen() {
           ]}>
         </View>
       </SafeAreaView>
-      <StatusBar style='auto' />
+      <StatusBar />
     </PaperProvider>
   )
 }

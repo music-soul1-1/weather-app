@@ -1,9 +1,9 @@
 //#region Imports
 import React, { useState, useEffect } from 'react';
-import { StatusBar } from 'expo-status-bar';
 import {
   Text, View, 
   ImageBackground, 
+  StatusBar,
   SafeAreaView, useColorScheme, 
   ScrollView, RefreshControl, FlatList } from 'react-native';
 
@@ -36,7 +36,6 @@ import {
 import theme from '../modules/theme';
 import { styles } from '../modules/styles';
 import ForecastWidget from '../modules/ForecastWidget';
-import * as Application from 'expo-application';
 
 //#endregion
 
@@ -478,7 +477,7 @@ export default function MainScreen({navigation}: {navigation: any}) {
                     <Button 
                       textColor={colorScheme == 'dark' ? theme.palettes.secondary[70] : theme.palettes.secondary[95]}
                       onPress={() => navigation.navigate('InfoScreen')}>
-                      v.{Application.nativeApplicationVersion}
+                      v.0.0.1
                     </Button>
                   </View>
                 </ImageBackground>
@@ -515,7 +514,10 @@ export default function MainScreen({navigation}: {navigation: any}) {
           </ScrollView>
         )}
           
-        <StatusBar style="auto" />
+        <StatusBar 
+          animated={true} 
+          translucent={true} // Android only
+          backgroundColor={'rgba(0,0,0,0)'} />
         
       </SafeAreaView>
     </PaperProvider>
