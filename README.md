@@ -14,9 +14,12 @@ If you found any problems that weren't mentioned in [release notes](https://gith
 
 ## Screenshots
 
-![imgonline-com-ua-twotoone-MNYj3axfYyDZQdx (1)](https://github.com/music-soul1-1/weather-app/assets/72669184/a5971c8d-beeb-41bc-88ca-cf1c476fa1e9)
-![imgonline-com-ua-twotoone-5FYva890OG50O3kf (1)](https://github.com/music-soul1-1/weather-app/assets/72669184/34950c6d-4ecd-4534-8b55-55f61005b7e5)
-![imgonline-com-ua-twotoone-YTbfdz0SuwaGa7ED (1)](https://github.com/music-soul1-1/weather-app/assets/72669184/5a349d9b-ec7a-45e1-ab59-9aba818424d0)
+![1](https://github.com/music-soul1-1/weather-app/assets/72669184/7fce2771-779d-47ee-8eb5-537a5bc1b0ec)
+
+![2](https://github.com/music-soul1-1/weather-app/assets/72669184/d4909f6f-804d-4edc-b543-ece87b5810e0)
+
+![3](https://github.com/music-soul1-1/weather-app/assets/72669184/5753a990-43ed-457f-8eae-7f947d52f166)
+
 
 ## Roadmap
 
