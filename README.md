@@ -4,6 +4,12 @@ This app allows you to see the current weather and forecast for different cities
 
 [OpenWeatherAPI](https://openweathermap.org/) is used to get weather data.
 
+## Features
+* Weather app.
+* See current weather and forecast for multiple cities.
+* Dark and light themes support.
+* Background image changes according to system theme and weather.
+
 ## Usage
 
 1. Download [the latest release](https://github.com/music-soul1-1/weather-app/releases/latest).
@@ -18,14 +24,16 @@ If you found any problems that weren't mentioned in [release notes](https://gith
 ![imgonline-com-ua-twotoone-5FYva890OG50O3kf (1)](https://github.com/music-soul1-1/weather-app/assets/72669184/34950c6d-4ecd-4534-8b55-55f61005b7e5)
 ![imgonline-com-ua-twotoone-YTbfdz0SuwaGa7ED (1)](https://github.com/music-soul1-1/weather-app/assets/72669184/5a349d9b-ec7a-45e1-ab59-9aba818424d0)
 
-## Roadmap
+## Plans
 
 Here are some planned features and improvements for the Weather App:
 
 - Implement search functionality to allow users to search for specific cities.
+- Add settings screen.
 - Add support for different units of measurement (e.g., Celsius, Fahrenheit).
 - Enhance the UI design for a more visually appealing experience.
 - Implement localization to support multiple languages.
+- Add page indicator.
 - Improve code readability.
 - Improve performance.
 - Add more icons for weather state.
@@ -45,6 +53,10 @@ If you'd like to contribute, please follow these steps:
 7. Submit a pull request explaining the changes you've made.
 
 ## Release notes
+
+### v.0.0.2
+- Navigation header changed to custom element (in the MainScreen). That means that the bug with buttons and text color is fixed.
+- Added version check in app info screen. Now if there's a new release, the user will see a message and an update button.
 
 ### v.0.0.1
 - First release.

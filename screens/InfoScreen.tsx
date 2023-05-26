@@ -14,11 +14,19 @@ import {
 } from '@react-navigation/native';
 import { styles } from '../modules/styles';
 import theme from '../modules/theme';
+import { version as appVersion } from '../package.json';
+import { owner, repoName } from '../modules/consts';
+import { useEffect, useState } from 'react';
 
 //#endregion
 
 export default function InfoScreen() {
   const colorScheme = useColorScheme(); // gets system theme mode
+  const [latestVersion, setLatestVersion] = useState('');
+
+  useEffect(() => {
+    getLatestVersion();
+  }, []);
 
   const { LightTheme, DarkTheme } = adaptNavigationTheme({
     reactNavigationLight: NavigationDefaultTheme,
@@ -43,6 +51,25 @@ export default function InfoScreen() {
     },
   };
 
+  async function getLatestVersion() {
+    const link = `https://api.github.com/repos/${owner}/${repoName}/releases/latest`;
+
+    try {
+      const response = await fetch(link);
+      const data = await response.json();
+
+      if (response.ok) {
+        setLatestVersion(data?.tag_name);
+      }
+      else {
+        console.log('There was an error getting response from GitHub API');
+      }
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
+  
   return (
     <PaperProvider theme={colorScheme == 'dark' ? CombinedDarkTheme : CombinedDefaultTheme}>
       <View style={[
@@ -50,7 +77,8 @@ export default function InfoScreen() {
           {backgroundColor: colorScheme == 'dark' ? theme.palettes.secondary[10] : theme.palettes.secondary[95]}
         ]}>
           <View style={{
-              padding: 40,
+              paddingHorizontal: 40,
+              paddingVertical: 15,
               justifyContent: 'center',
               alignItems: 'center',
               borderRadius: 26,
@@ -58,24 +86,43 @@ export default function InfoScreen() {
               backgroundColor: colorScheme == 'dark' ? theme.palettes.secondary[30] : theme.palettes.secondary[90]
             }}>
             <Text style={colorScheme == 'dark' ? styles.darkText : styles.text}>
-              App version: v.0.0.1
+              App version: {appVersion}
             </Text>
             <Text style={[
                 colorScheme == 'dark' ? styles.darkText : styles.text, 
-                {marginTop: 0, marginBottom: 40}
+                {marginTop: 0, marginBottom: 20}
               ]}
-              onPress={() => Linking.openURL('https://github.com/music-soul1-1')}>
-              Author: music-soul1-1
+              onPress={() => Linking.openURL(`https://github.com/${owner}`)}>
+              Author: {owner}
             </Text>
             <Button 
               style={{marginBottom: 20}}
               buttonColor={colorScheme == 'dark' ? theme.palettes.primary[40] : theme.palettes.primary[90]}
               mode='contained-tonal' 
-              onPress={() => Linking.openURL('https://github.com/music-soul1-1/weather-app')}>
+              onPress={() => Linking.openURL(`https://github.com/${owner}/${repoName}`)}>
               See app page on GitHub
             </Button>
+            <Text style={[
+                colorScheme == 'dark' ? styles.darkText : styles.text, 
+                {marginTop: 0, marginBottom: 20}
+              ]}>
+                {latestVersion != `v.${appVersion}` ? 
+                  `Update to ${latestVersion} available:` : 
+                  'You are using the latest version'
+                }
+            </Text>
+            {latestVersion != `v.${appVersion}` ? (
+              <Button 
+                style={{marginBottom: 20}}
+                buttonColor={colorScheme == 'dark' ? theme.palettes.primary[40] : theme.palettes.primary[90]}
+                mode='contained-tonal' 
+                onPress={() => Linking.openURL(`https://github.com/${owner}/${repoName}/releases/latest`)}>
+                Update app
+              </Button>
+            ) : (null)}
+            
             <Button 
-              onPress={() => Linking.openURL('https://github.com/music-soul1-1/weather-app/blob/81dc418110ee80cbd69d61c900fc8440e8fc8497/LICENSE')}>
+              onPress={() => Linking.openURL(`https://github.com/${owner}/${repoName}/blob/81dc418110ee80cbd69d61c900fc8440e8fc8497/LICENSE`)}>
               MIT license
             </Button>
           </View>

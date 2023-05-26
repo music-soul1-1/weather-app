@@ -57,7 +57,7 @@ export default function App() {
         <Stack.Navigator 
           initialRouteName='Main' 
           screenOptions={{
-            headerShown: true, 
+            headerShown: false, 
             headerShadowVisible: false, 
             headerTransparent: true,
             headerTitleAlign: 'center',

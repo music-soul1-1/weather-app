@@ -164,6 +164,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 10,
+  },
+  headerContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignContent: 'center',
+    width: '100%',
+    alignItems: 'center',
+    top: 0,
+    marginBottom: 150,
+    marginTop: 25,
+    paddingHorizontal: 12,
   }
 });
 

@@ -36,6 +36,7 @@ import {
 import theme from '../modules/theme';
 import { styles } from '../modules/styles';
 import ForecastWidget from '../modules/ForecastWidget';
+import { version as appVersion } from '../package.json';
 
 //#endregion
 
@@ -81,11 +82,6 @@ export default function MainScreen({navigation}: {navigation: any}) {
     if (isScreenFocused) {
       loadLocations();
     }
-    // ToDo: add onPress functions here to fix a bug when the buttons don't work
-    navigation.setOptions({
-      headerRight: () => (<IconButton icon={'plus'} size={28} />),
-      headerLeft: () => (<IconButton icon={'delete-outline'} size={28} />),
-      })
   }, [isScreenFocused]);
 
   useEffect(() => {
@@ -106,17 +102,6 @@ export default function MainScreen({navigation}: {navigation: any}) {
     try {
       const data = await AsyncStorage.getItem(`currentWeatherData/${city}`);
       setWeatherData(data ? JSON.parse(data) : null);
-      navigation.setOptions({
-        title: city, 
-        headerTitleStyle: {
-          fontWeight: "100",
-          fontFamily: 'Roboto',
-          fontSize: city.length >= 16 ?  16 : 24,
-          color: colorScheme == 'dark' ? CombinedDarkTheme.colors.secondary : theme.palettes.secondary[30],
-        },
-        headerRight: () => (<IconButton icon={'plus'} size={28} onPress={() => navigation.navigate('AddWeather')} />),
-        headerLeft: () => (<IconButton icon={'delete-outline'} size={28} onPress={() => {removeWeather(city)}} />),
-      });
     }
     catch (error) {
       setWeatherData(null);
@@ -154,17 +139,6 @@ export default function MainScreen({navigation}: {navigation: any}) {
         // If no internet connection, load the weather data from local storage
         loadWeather(location);
       }
-      navigation.setOptions({
-        title: location, 
-        headerTitleStyle: {
-          fontWeight: "100",
-          fontFamily: 'Roboto',
-          fontSize: location.length >= 16 ?  16 : 24,
-          color: colorScheme == 'dark' ? CombinedDarkTheme.colors.secondary : theme.palettes.secondary[30],
-        },
-        headerRight: () => (<IconButton icon={'plus'} size={28} onPress={() => navigation.navigate('AddWeather')} />),
-        headerLeft: () => (<IconButton icon={'delete-outline'} size={28} onPress={() => {removeWeather(location)}} />),
-      });
     }
     catch (error) {
       setWeatherData(null);
@@ -259,7 +233,7 @@ export default function MainScreen({navigation}: {navigation: any}) {
   async function getForecastData(city: string) {
     try {
       if (isInternetConnected) {
-        const data = await getForecast(city, 6);
+        const data = await getForecast(city, 7);
         setForecastData(data);
       } 
       else {
@@ -326,8 +300,22 @@ export default function MainScreen({navigation}: {navigation: any}) {
                   key={key} 
                   source={chooseBackground()}
                   resizeMode="cover">
-                
-                  <View key={key} style={[styles.container, {marginTop: 220, paddingBottom: 20}]}>
+                  
+                  {/* Header */}
+                  <View key={key} style={styles.container}>
+                    <View style={[styles.headerContainer,]}>
+                      <IconButton icon={'delete-outline'} size={28} onPress={() => {removeWeather(key)}} />
+                      <Text style={{
+                        fontSize: key.length >= 16 ?  16 : 24,
+                        marginHorizontal: 12,
+                        color: colorScheme == 'dark' ? CombinedDarkTheme.colors.secondary : theme.palettes.secondary[30],
+                        }}>
+                          {key}
+                      </Text>
+                      <IconButton icon={'plus'} size={28} onPress={() => navigation.navigate('AddWeather')} />
+                    </View>
+                    
+                    {/* Temperature */}
                     <View style={[
                         styles.temperatureContainer,
                         colorScheme == 'dark' ? styles.temperatureContainerDark : styles.temperatureContainerLight
@@ -477,7 +465,7 @@ export default function MainScreen({navigation}: {navigation: any}) {
                     <Button 
                       textColor={colorScheme == 'dark' ? theme.palettes.secondary[70] : theme.palettes.secondary[95]}
                       onPress={() => navigation.navigate('InfoScreen')}>
-                      v.0.0.1
+                      v.{appVersion}
                     </Button>
                   </View>
                 </ImageBackground>
