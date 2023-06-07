@@ -1,7 +1,8 @@
 //#region Imports
 import { View, Text, useColorScheme } from 'react-native';
 import { styles }from './styles';
-import theme from './theme';
+import { theme } from './theme';
+import { measuringUnits } from './consts';
 import { capitalizeFirstWord } from './WeatherApiHandler';
 import CloudyIcon from '../assets/weather-icons/wi-cloudy.svg';
 import LightCloudIcon from '../assets/weather-icons/wi-day-cloudy.svg';
@@ -16,6 +17,7 @@ type forecastProps = {
   time: number | string;
   description: string;
   type: string;
+  isMetric: boolean;
   clouds?: number,
   rainProbability?: number,
   windSpeed?: number,
@@ -83,7 +85,7 @@ export default function ForecastWidget(props: forecastProps) {
       <Text style={
           colorScheme == 'dark' ? styles.forecastLargeLabelDark : styles.forecastLargeLabelLight
         }>
-          {Math.round(Number(props.temp) * 10)/10}°C
+          {Math.round(Number(props.temp) * 10)/10}{props.isMetric ? measuringUnits.metric.temp : measuringUnits.imperial.temp}
       </Text>
       {chooseIcon()}
       <Text style={
@@ -104,7 +106,7 @@ export default function ForecastWidget(props: forecastProps) {
       <Text style={
           colorScheme == 'dark' ? styles.forecastMeduimLabelDark : styles.forecastMeduimLabelLight
         }>
-          Wind: {props.windSpeed}m/s
+          Wind: {props.windSpeed} {props.isMetric ? measuringUnits.metric.speed : measuringUnits.imperial.speed}
       </Text>
       <Text style={[
           colorScheme == 'dark' ? styles.forecastLargeLabelDark : styles.forecastLargeLabelLight,

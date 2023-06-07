@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import theme from './theme';
+import {theme} from './theme';
 
 export function hexToRgba(hex : string, opacity : number) {
   hex = hex.replace('#','');
@@ -165,6 +165,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 10,
   },
+  appInfoBox: {
+    paddingHorizontal: 40,
+    paddingVertical: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 26,
+    elevation: 5,
+  },
   headerContainer: {
     flex: 1,
     flexDirection: 'row',
@@ -176,6 +184,42 @@ const styles = StyleSheet.create({
     marginBottom: 150,
     marginTop: 25,
     paddingHorizontal: 12,
+  },
+  settingsBox: {
+    padding: 16, 
+    borderRadius: 16, 
+    margin: 8,
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems: 'center',
+  },
+  labelMediumLight: {
+    fontSize: 15,
+    color: theme.palettes.secondary[98],
+  },
+  labelMediumDark: {
+    fontSize: 15,
+    color: theme.palettes.secondary[10],
+  },
+  labelNormalLight: {
+    fontSize: 14,
+    color: theme.palettes.secondary[98],
+  },
+  labelNormalDark: {
+    fontSize: 14,
+    color: theme.palettes.secondary[10],
+  },
+  labelLargeLight: {
+    fontSize: 18,
+    color: theme.palettes.secondary[98],
+  },
+  labelLargeDark: {
+    fontSize: 18,
+    color: theme.palettes.secondary[10],
+  },
+  settingsScroll: {
+    paddingBottom: 40,
+    marginBottom: 40,
   }
 });
 

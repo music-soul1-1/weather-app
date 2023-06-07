@@ -5,19 +5,15 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MainScreen from './screens/MainScreen';
 import AddWeatherScreen from './screens/AddWeatherScreen';
 import InfoScreen from './screens/InfoScreen';
-import theme from './modules/theme';
+import SettingsScreen from './screens/SettingsScreen';
+import {theme, CombinedDarkTheme, CombinedDefaultTheme} from './modules/theme';
 
-import {   
-  MD3DarkTheme, 
-  MD3LightTheme,
-  adaptNavigationTheme, 
+import {
   Provider as PaperProvider,
 } from 'react-native-paper';
 
 import {
   NavigationContainer,
-  DarkTheme as NavigationDarkTheme,
-  DefaultTheme as NavigationDefaultTheme,
 } from '@react-navigation/native';
 //#endregion
 
@@ -25,31 +21,6 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   const colorScheme = useColorScheme(); // gets system theme mode
-
-  const { LightTheme, DarkTheme } = adaptNavigationTheme({
-    reactNavigationLight: NavigationDefaultTheme,
-    reactNavigationDark: NavigationDarkTheme,
-  });
-
-  const CombinedDefaultTheme = {
-    ...MD3LightTheme,
-    ...LightTheme,
-    colors: {
-      ...MD3LightTheme.colors,
-      ...LightTheme.colors,
-      ...theme.schemes.light,
-    },
-  };
-
-  const CombinedDarkTheme = {
-    ...MD3DarkTheme,
-    ...DarkTheme,
-    colors: {
-      ...MD3DarkTheme.colors,
-      ...DarkTheme.colors,
-      ...theme.schemes.dark,
-    },
-  };
 
   return (
     <PaperProvider theme={colorScheme == 'dark' ? CombinedDarkTheme : CombinedDefaultTheme}>
@@ -85,6 +56,20 @@ export default function App() {
             component={InfoScreen}
             options={{ 
               title: 'App info', 
+              headerShown: true, 
+              headerShadowVisible: true, 
+              headerTransparent: false,
+              headerTitleAlign: 'center',
+              headerStyle: {
+                backgroundColor: colorScheme == 'dark' ? theme.palettes.secondary[30] : theme.palettes.secondary[80]
+              } 
+            }}
+          />
+          <Stack.Screen 
+            name="SettingsScreen"
+            component={SettingsScreen}
+            options={{ 
+              title: 'Settings', 
               headerShown: true, 
               headerShadowVisible: true, 
               headerTransparent: false,

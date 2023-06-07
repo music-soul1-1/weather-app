@@ -5,7 +5,8 @@ import {
   ImageBackground, 
   StatusBar,
   SafeAreaView, useColorScheme, 
-  ScrollView, RefreshControl, FlatList } from 'react-native';
+  ScrollView, RefreshControl, 
+  FlatList, Linking } from 'react-native';
 
 import { 
   currentWeather, 
@@ -18,10 +19,7 @@ import {
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import PagerView from 'react-native-pager-view';
-import {   
-  MD3DarkTheme, 
-  MD3LightTheme,
-  adaptNavigationTheme, 
+import {
   IconButton,
   Button,
   Divider,
@@ -29,21 +27,18 @@ import {
 } from 'react-native-paper';
 
 import {
-  DarkTheme as NavigationDarkTheme,
-  DefaultTheme as NavigationDefaultTheme,
   useIsFocused,
 } from '@react-navigation/native';
-import theme from '../modules/theme';
+import { theme, CombinedDarkTheme, CombinedDefaultTheme } from '../modules/theme';
 import { styles } from '../modules/styles';
+import { measuringUnits } from '../modules/consts';
 import ForecastWidget from '../modules/ForecastWidget';
-import { version as appVersion } from '../package.json';
 
 //#endregion
 
 
 export default function MainScreen({navigation}: {navigation: any}) {  
   //#region consts and functions
-
   const colorScheme = useColorScheme(); // gets system theme mode
   const [weatherData, setWeatherData] = useState<currentWeather | null>(null);
   const [forecastData, setForecastData] = useState<forecast | null>(null);
@@ -51,31 +46,6 @@ export default function MainScreen({navigation}: {navigation: any}) {
   const [isRefreshing, setRefreshing] = React.useState(false); // needed for refresh control
   const [isInternetConnected, setIsInternetConnected] = React.useState<boolean | null>(false);
   const isScreenFocused = useIsFocused();
-
-  const { LightTheme, DarkTheme } = adaptNavigationTheme({
-    reactNavigationLight: NavigationDefaultTheme,
-    reactNavigationDark: NavigationDarkTheme,
-  });
-
-  const CombinedDefaultTheme = {
-    ...MD3LightTheme,
-    ...LightTheme,
-    colors: {
-      ...MD3LightTheme.colors,
-      ...LightTheme.colors,
-      ...theme.schemes.light,
-    },
-  };
-
-  const CombinedDarkTheme = {
-    ...MD3DarkTheme,
-    ...DarkTheme,
-    colors: {
-      ...MD3DarkTheme.colors,
-      ...DarkTheme.colors,
-      ...theme.schemes.dark,
-    },
-  };
 
   useEffect (() => {
     // loading locations data on start
@@ -233,7 +203,7 @@ export default function MainScreen({navigation}: {navigation: any}) {
   async function getForecastData(city: string) {
     try {
       if (isInternetConnected) {
-        const data = await getForecast(city, 7);
+        const data = await getForecast(city);
         setForecastData(data);
       } 
       else {
@@ -330,7 +300,7 @@ export default function MainScreen({navigation}: {navigation: any}) {
                           {fontSize: 20, marginTop: 8}, 
                           colorScheme == 'dark' ? styles.temperatureDark : styles.temperatureLight
                         ]}>
-                          °C
+                          {weatherData?.isMetric ? measuringUnits.metric.temp : measuringUnits.imperial.temp}
                       </Text>
                     </View>
                     
@@ -338,7 +308,8 @@ export default function MainScreen({navigation}: {navigation: any}) {
                       colorScheme == 'dark' ? styles.forecastMeduimLabelDark : styles.forecastMeduimLabelLight,
                       styles.feelsLike,
                     ]}>
-                      Feels like {weatherData?.feelsLike ? Math.round(weatherData.feelsLike*10)/10 : 'undef.'}°C
+                      Feels like {weatherData?.feelsLike ? Math.round(weatherData.feelsLike*10)/10 : 'undef.'}
+                      {weatherData?.isMetric ? measuringUnits.metric.temp : measuringUnits.imperial.temp}
                     </Text>
                     
                     <Text style={[
@@ -370,6 +341,7 @@ export default function MainScreen({navigation}: {navigation: any}) {
                                   key={index}
                                   temp={forecastData?.list?.temp[index] ?? ''}
                                   time={item}
+                                  isMetric={weatherData?.isMetric ?? true}
                                   description={forecastData?.list?.description?.[index] ?? ''}
                                   type={forecastData?.list?.type?.[index] ?? ''}
                                   clouds={forecastData?.list?.clouds?.[index]}
@@ -391,7 +363,9 @@ export default function MainScreen({navigation}: {navigation: any}) {
                         colorScheme == 'dark' ? styles.detailsBoxDark : styles.detailsBoxLight,
                       ]}>
                         <Text style={colorScheme == 'dark' ? styles.detailsTextDark : styles.detailsTextLight}>
-                          Wind: {weatherData?.windSpeed} m/s
+                          Wind: {weatherData?.windSpeed} {
+                            weatherData?.isMetric ? measuringUnits.metric.speed : measuringUnits.imperial.speed
+                          }
                         </Text>
                         <Divider />
                         <Text style={colorScheme == 'dark' ? styles.detailsTextDark : styles.detailsTextLight}>
@@ -447,7 +421,8 @@ export default function MainScreen({navigation}: {navigation: any}) {
                         colorScheme == 'dark' ? styles.detailsBoxDark : styles.detailsBoxLight,
                       ]}>
                         <Text style={colorScheme == 'dark' ? styles.detailsTextDark : styles.detailsTextLight}>
-                          Feels like {weatherData?.feelsLike ? Math.round(weatherData.feelsLike*10)/10 : 'undef.'}°C
+                          Feels like {weatherData?.feelsLike ? Math.round(weatherData.feelsLike*10)/10 : 'undef.'}
+                          {weatherData?.isMetric ? measuringUnits.metric.temp : measuringUnits.imperial.temp}
                         </Text>
                         <Divider />
                         <Text style={colorScheme == 'dark' ? styles.detailsTextDark : styles.detailsTextLight}>
@@ -464,8 +439,13 @@ export default function MainScreen({navigation}: {navigation: any}) {
                   <View style={styles.appInfoLabel}>
                     <Button 
                       textColor={colorScheme == 'dark' ? theme.palettes.secondary[70] : theme.palettes.secondary[95]}
-                      onPress={() => navigation.navigate('InfoScreen')}>
-                      v.{appVersion}
+                      onPress={() => navigation.navigate('SettingsScreen')}>
+                      Settings
+                    </Button>
+                    <Button
+                      textColor={colorScheme == 'dark' ? theme.palettes.secondary[70] : theme.palettes.secondary[95]}
+                      onPress={() => Linking.openURL(`https://openweathermap.org`)}>
+                      Powered by OpenWeather
                     </Button>
                   </View>
                 </ImageBackground>

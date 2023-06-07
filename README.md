@@ -9,6 +9,7 @@ This app allows you to see the current weather and forecast for different cities
 * See current weather and forecast for multiple cities.
 * Dark and light themes support.
 * Background image changes according to system theme and weather.
+* Settings.
 
 ## Usage
 
@@ -31,16 +32,15 @@ If you found any problems that weren't mentioned in [release notes](https://gith
 
 Here are some planned features and improvements for the Weather App:
 
+- Fix icon choosing algorithm(works properly only with English).
 - Implement search functionality to allow users to search for specific cities.
-- Add settings screen.
-- Add support for different units of measurement (e.g., Celsius, Fahrenheit).
 - Enhance the UI design for a more visually appealing experience.
-- Implement localization to support multiple languages.
+- Improve localization.
 - Add page indicator.
 - Improve code readability.
 - Improve performance.
 - Add more icons for weather state.
-- Improve error handling and error messages for better user feedback.
+- Improve error handling and error messages.
 
 
 ## Contributing
@@ -56,6 +56,11 @@ If you'd like to contribute, please follow these steps:
 7. Submit a pull request explaining the changes you've made.
 
 ## Release notes
+
+### v.0.0.3
+- Added settings screen. Now user can change measurement units, language and the number of forecast timestamps.
+- Theme declarations where moved to theme module.
+- Fixed a bug with update version when device isn't connected to internet.
 
 ### v.0.0.2
 - Navigation header changed to custom element (in the MainScreen). That means that the bug with buttons and text color is fixed.
@@ -79,6 +84,7 @@ The following Npm dependencies are used in the app:
 - [react-native-screens](https://www.npmjs.com/package/react-native-screens) (version 3.20.0)
 - [react-native-svg](https://www.npmjs.com/package/react-native-svg) (version 13.9.0)
 - [react-native-svg-transformer](https://www.npmjs.com/package/react-native-svg-transformer) (version 1.0.0)
+- [react-native-element-dropdown](https://www.npmjs.com/package/react-native-element-dropdown) (version 2.9.0)
 - and others (see package.json)
 
 Note: app uses [React Native CLI](https://reactnative.dev/).

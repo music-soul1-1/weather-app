@@ -1,55 +1,48 @@
 //#region Imports
+import React from 'react';
 import { View, Text, useColorScheme, Linking } from 'react-native';
-import {   
-  MD3DarkTheme, 
-  MD3LightTheme,
-  adaptNavigationTheme,
+import {
   Button,
   Provider as PaperProvider 
 } from 'react-native-paper';
-
-import {
-  DarkTheme as NavigationDarkTheme,
-  DefaultTheme as NavigationDefaultTheme,
-} from '@react-navigation/native';
 import { styles } from '../modules/styles';
-import theme from '../modules/theme';
+import { theme, CombinedDarkTheme, CombinedDefaultTheme } from '../modules/theme';
 import { version as appVersion } from '../package.json';
 import { owner, repoName } from '../modules/consts';
+import {checkInternetConnection} from '../modules/WeatherApiHandler';
 import { useEffect, useState } from 'react';
 
 //#endregion
 
 export default function InfoScreen() {
+  //#region consts and functions
   const colorScheme = useColorScheme(); // gets system theme mode
+  const [isInternetConnected, setIsInternetConnected] = React.useState<boolean | null>(false);
   const [latestVersion, setLatestVersion] = useState('');
 
   useEffect(() => {
+    checkConnection();
     getLatestVersion();
   }, []);
 
-  const { LightTheme, DarkTheme } = adaptNavigationTheme({
-    reactNavigationLight: NavigationDefaultTheme,
-    reactNavigationDark: NavigationDarkTheme,
-  });
-  const CombinedDefaultTheme = {
-    ...MD3LightTheme,
-    ...LightTheme,
-    colors: {
-      ...MD3LightTheme.colors,
-      ...LightTheme.colors,
-      ...theme.schemes.light,
-    },
+  async function checkConnection() {
+    const isConnected = await checkInternetConnection();
+    setIsInternetConnected(isConnected);
   };
-  const CombinedDarkTheme = {
-    ...MD3DarkTheme,
-    ...DarkTheme,
-    colors: {
-      ...MD3DarkTheme.colors,
-      ...DarkTheme.colors,
-      ...theme.schemes.dark,
-    },
-  };
+
+  function checkUpdateStatus() {
+    if (isInternetConnected) {
+      if (latestVersion != `v.${appVersion}`) {
+        return `Update to ${latestVersion} available:`;
+      }
+      else {
+        return 'You are using the latest version';
+      }
+    }
+    else {
+      return 'Unable to check for updates';
+    }
+  }
 
   async function getLatestVersion() {
     const link = `https://api.github.com/repos/${owner}/${repoName}/releases/latest`;
@@ -69,6 +62,7 @@ export default function InfoScreen() {
       console.log(error);
     }
   }
+  //#endregion
   
   return (
     <PaperProvider theme={colorScheme == 'dark' ? CombinedDarkTheme : CombinedDefaultTheme}>
@@ -76,15 +70,10 @@ export default function InfoScreen() {
           styles.container,
           {backgroundColor: colorScheme == 'dark' ? theme.palettes.secondary[10] : theme.palettes.secondary[95]}
         ]}>
-          <View style={{
-              paddingHorizontal: 40,
-              paddingVertical: 15,
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 26,
-              elevation: 5,
-              backgroundColor: colorScheme == 'dark' ? theme.palettes.secondary[30] : theme.palettes.secondary[90]
-            }}>
+          <View style={[
+              styles.appInfoBox,
+              {backgroundColor: colorScheme == 'dark' ? theme.palettes.secondary[30] : theme.palettes.secondary[90]}
+            ]}>
             <Text style={colorScheme == 'dark' ? styles.darkText : styles.text}>
               App version: {appVersion}
             </Text>
@@ -106,10 +95,7 @@ export default function InfoScreen() {
                 colorScheme == 'dark' ? styles.darkText : styles.text, 
                 {marginTop: 0, marginBottom: 20}
               ]}>
-                {latestVersion != `v.${appVersion}` ? 
-                  `Update to ${latestVersion} available:` : 
-                  'You are using the latest version'
-                }
+                {checkUpdateStatus()}
             </Text>
             {latestVersion != `v.${appVersion}` ? (
               <Button 

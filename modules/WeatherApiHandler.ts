@@ -1,9 +1,10 @@
-import { apiKey, locationNumLimit } from "./consts";
+import { apiKey, locationNumLimit, timestamps } from "./consts";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
 
-export let units = 'metric';
+let units = 'metric';
 let lang = 'en';
+let numberOfTimestamps = '7';
 
 export type currentWeather = {
   type: string;
@@ -12,6 +13,7 @@ export type currentWeather = {
   temp: number;
   feelsLike: number;
   humidity: number;
+  isMetric: boolean;
   rainProbability?: number;
   seaPressure: number;
   groundPressure?: number;
@@ -28,7 +30,8 @@ export type currentWeather = {
 }
 
 export type forecast = {
-  timestamps?: number;
+  timestamps?: string;
+  isMetric: boolean;
   list: {
     time: (string | number)[];
     temp: number[];
@@ -44,6 +47,12 @@ export type location = {
   city?: string | undefined;
   lat: number | undefined;
   lon: number | undefined;
+}
+
+export type settings = {
+  units: string;
+  lang: string;
+  numberOfTimestamps: string;
 }
 
 /**
@@ -179,6 +188,7 @@ export const getWeather = async (location: string = '') => {
       temp: data?.main.temp,
       feelsLike: data?.main.feels_like,
       humidity: data?.main.humidity,
+      isMetric: units == 'metric' ? true : false,
       seaPressure: data?.main.pressure,
       groundPressure: data?.main.grnd_level,
       visibility: data?.visibility,
@@ -232,7 +242,7 @@ export const getWeatherData = async (location : string = '') => {
  * @param numberOfTimestamps number of timestamps that will be returned
  * @returns forecast data object of type forecast
  */
-export async function getForecast(city: string, numberOfTimestamps: number = 40) {
+export async function getForecast(city: string) {
   const newLocation = city ? await getLocation(city) : await getLocationByIP();
 
   try {
@@ -245,6 +255,7 @@ export async function getForecast(city: string, numberOfTimestamps: number = 40)
 
     const forecastData : forecast = {
       timestamps: data?.cnt,
+      isMetric: units == 'metric' ? true : false,
       list: {
         time: [],
         temp: [],
@@ -276,6 +287,70 @@ export async function getForecast(city: string, numberOfTimestamps: number = 40)
   catch (error) {
     console.log(error);
     return null;
+  }
+}
+
+export async function saveSettings(props: settings) {
+  try {
+    props.lang = props.lang ?? 'en';
+    props.units = props.units ?? 'metric';
+    props.numberOfTimestamps = props.numberOfTimestamps ?? 7;
+
+    await AsyncStorage.setItem(`settings`, JSON.stringify(props));
+    units = props.units ?? 'metric';
+    lang = props.lang ?? 'en';
+    numberOfTimestamps = props.numberOfTimestamps ?? '7';
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+export async function loadSettings() {
+  try {
+    const settings = await AsyncStorage.getItem(`settings`);
+    
+    if (settings) {
+      try {
+        const parsedSettings = JSON.parse(settings);
+        return parsedSettings;
+      }
+      catch (error) {
+        console.log('Invalid settings format:', settings);
+        return getDefaultSettings();
+      }
+    }
+    else {
+      const defaultSettings = getDefaultSettings();
+      saveSettings(defaultSettings);
+
+      return defaultSettings;
+    }
+  }
+  catch (error) {
+    console.log(error);
+    const defaultSettings = getDefaultSettings();
+    saveSettings(defaultSettings);
+
+    return defaultSettings;
+  }
+}
+
+function getDefaultSettings(): settings {
+  return {
+    units: 'metric',
+    lang: 'en',
+    numberOfTimestamps: '7',
+  };
+}
+
+export async function deleteSettings() {
+  try {
+    const settings = await AsyncStorage.removeItem(`settings`);
+    console.log(settings);
+  }
+  catch (error) {
+    console.log(error);
   }
 }
 

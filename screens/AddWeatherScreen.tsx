@@ -7,18 +7,11 @@ import {
 } from 'react-native';
 import { getLocation, getWeatherData } from '../modules/WeatherApiHandler';
 import {   
-  MD3DarkTheme, 
-  MD3LightTheme,
-  adaptNavigationTheme, 
   TextInput,
   Provider as PaperProvider 
 } from 'react-native-paper';
 
-import {
-  DarkTheme as NavigationDarkTheme,
-  DefaultTheme as NavigationDefaultTheme,
-} from '@react-navigation/native';
-import theme from '../modules/theme';
+import { theme, CombinedDarkTheme, CombinedDefaultTheme } from '../modules/theme';
 import { styles } from '../modules/styles';
 //#endregion
 
@@ -27,31 +20,6 @@ export default function AddWeatherScreen() {
   const colorScheme = useColorScheme(); // gets system theme mode
   const [doesCityExist, setDoesCityExist] = useState(true);
   const [isLabelVisible, setIsLabelVisible] = useState(false);
-
-  const { LightTheme, DarkTheme } = adaptNavigationTheme({
-    reactNavigationLight: NavigationDefaultTheme,
-    reactNavigationDark: NavigationDarkTheme,
-  });
-
-  const CombinedDefaultTheme = {
-    ...MD3LightTheme,
-    ...LightTheme,
-    colors: {
-      ...MD3LightTheme.colors,
-      ...LightTheme.colors,
-      ...theme.schemes.light,
-    },
-  };
-
-  const CombinedDarkTheme = {
-    ...MD3DarkTheme,
-    ...DarkTheme,
-    colors: {
-      ...MD3DarkTheme.colors,
-      ...DarkTheme.colors,
-      ...theme.schemes.dark,
-    },
-  };
 
   /**
    * Add weather handler. Called inside TextInput.
