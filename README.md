@@ -39,7 +39,7 @@ Here are some planned features and improvements for the Weather App:
 - Add page indicator.
 - Improve code readability.
 - Improve performance.
-- Add more icons for weather state.
+- Add more icons for weather state and wind.
 - Improve error handling and error messages.
 
 
@@ -85,13 +85,16 @@ The following Npm dependencies are used in the app:
 - [react-native-svg](https://www.npmjs.com/package/react-native-svg) (version 13.9.0)
 - [react-native-svg-transformer](https://www.npmjs.com/package/react-native-svg-transformer) (version 1.0.0)
 - [react-native-element-dropdown](https://www.npmjs.com/package/react-native-element-dropdown) (version 2.9.0)
-- and others (see package.json)
+- and others (see [package.json](package.json))
+
+The app also uses the following:
+- [erikflowers's weather-icons](https://github.com/erikflowers/weather-icons)
 
 Note: app uses [React Native CLI](https://reactnative.dev/).
 
 ## License
 
-The Weather App is open-source and released under the [MIT License](https://github.com/music-soul1-1/weather-app/blob/4e6a5fc8778606bd4ad1c18962f88a244dd562a4/LICENSE).
+The Weather App is open-source and released under the [MIT License](LICENSE).
 
 ## Credits
 
