@@ -15,6 +15,7 @@ type forecastProps = {
   key: string | number;
   temp: number | string;
   time: number | string;
+  date: string;
   description: string;
   type: string;
   isMetric: boolean;
@@ -113,6 +114,12 @@ export default function ForecastWidget(props: forecastProps) {
           {marginTop: 8}
         ]}>
           {props.time}
+      </Text>
+      <Text style={[
+          {marginTop: 2},
+          colorScheme == 'dark' ? styles.forecastMeduimLabelDark : styles.forecastMeduimLabelLight
+        ]}>
+          {props.date}
       </Text>
     </View>
   )

@@ -340,7 +340,8 @@ export default function MainScreen({navigation}: {navigation: any}) {
                                 <ForecastWidget
                                   key={index}
                                   temp={forecastData?.list?.temp[index] ?? ''}
-                                  time={item}
+                                  time={forecastData?.list.time[index] ?? ''}
+                                  date={forecastData?.list.date[index] ?? ''}
                                   isMetric={weatherData?.isMetric ?? true}
                                   description={forecastData?.list?.description?.[index] ?? ''}
                                   type={forecastData?.list?.type?.[index] ?? ''}

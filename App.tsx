@@ -1,5 +1,5 @@
 //#region Imports
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useColorScheme } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MainScreen from './screens/MainScreen';
@@ -7,6 +7,7 @@ import AddWeatherScreen from './screens/AddWeatherScreen';
 import InfoScreen from './screens/InfoScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import {theme, CombinedDarkTheme, CombinedDefaultTheme} from './modules/theme';
+import { loadSettings } from './modules/WeatherApiHandler';
 
 import {
   Provider as PaperProvider,
@@ -21,6 +22,11 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   const colorScheme = useColorScheme(); // gets system theme mode
+
+  useEffect(() => {
+    loadSettings();
+    console.log("loaded");
+  }, []);
 
   return (
     <PaperProvider theme={colorScheme == 'dark' ? CombinedDarkTheme : CombinedDefaultTheme}>

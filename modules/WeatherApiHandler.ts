@@ -34,6 +34,7 @@ export type forecast = {
   isMetric: boolean;
   list: {
     time: (string | number)[];
+    date: string[];
     temp: number[];
     description?: string[];
     type: string[];
@@ -72,6 +73,16 @@ function convertTimeFormat(timeString : string) {
   //const formattedOffset = offset.replace(/(\d{2})(\d{2})/, '$1:$2');
 
   return `${formattedTime}`;
+}
+
+export function convertDate(timestamp : number) {
+  const date = new Date(timestamp * 1000);
+  const formattedDate = date.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "numeric",
+  }).replace(/\//g, "."); // replacing '/' to '.'
+
+  return formattedDate;
 }
 
 /**
@@ -258,6 +269,7 @@ export async function getForecast(city: string) {
       isMetric: units == 'metric' ? true : false,
       list: {
         time: [],
+        date: [],
         temp: [],
         description: [],
         type: [],
@@ -269,6 +281,7 @@ export async function getForecast(city: string) {
 
     data?.list.slice(0, data?.cnt).forEach((item: any) => {
       forecastData.list?.time.push(convertTime(item?.dt));
+      forecastData.list?.date.push(convertDate(item?.dt));
       forecastData.list?.temp.push(item?.main.temp);
       forecastData.list?.description?.push(item?.weather[0].description);
       forecastData.list?.type?.push(item?.weather[0]?.main);
@@ -313,6 +326,11 @@ export async function loadSettings() {
     if (settings) {
       try {
         const parsedSettings = JSON.parse(settings);
+        
+        units = parsedSettings.units ?? 'metric';
+        lang = parsedSettings.lang ?? 'en';
+        numberOfTimestamps = parsedSettings.numberOfTimestamps ?? '7';
+
         return parsedSettings;
       }
       catch (error) {

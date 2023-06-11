@@ -33,7 +33,6 @@ If you found any problems that weren't mentioned in [release notes](https://gith
 Here are some planned features and improvements for the Weather App:
 
 - Fix icon choosing algorithm(works properly only with English).
-- Fix a bug: settings are not loading on startup(only after exiting settings screen).
 - Implement search functionality to allow users to search for specific cities.
 - Enhance the UI design for a more visually appealing experience.
 - Improve localization.
@@ -57,6 +56,10 @@ If you'd like to contribute, please follow these steps:
 7. Submit a pull request explaining the changes you've made.
 
 ## Release notes
+
+### v.0.0.4
+- Fixed bug: settings were not loading on app startup.
+- Date added to forecast widgets.
 
 ### v.0.0.3
 - Added settings screen. Now user can change measurement units, language and the number of forecast timestamps.
