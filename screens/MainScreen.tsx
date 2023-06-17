@@ -220,21 +220,32 @@ export default function MainScreen({navigation}: {navigation: any}) {
    * @returns require(path/to/image)
    */
   const chooseBackground = () => {
-    if (colorScheme === 'dark') {
-      if (weatherData?.type === 'Clouds' || weatherData?.type === 'Rain') {
-        return require('../assets/image-dark.png');
+    if (weatherData?.id)
+    {
+      // if clouds or rain:
+      if ((weatherData?.id >= 500 && weatherData?.id <= 531) || (weatherData?.id >= 800)) {
+        if (colorScheme === 'dark') {
+          return require('../assets/image-dark.png');
+        }
+        else {
+          return require('../assets/image-light.png');
+        }
       }
       else {
-        return require('../assets/background-dark-no-rain.jpg');
+        if (colorScheme === 'dark')
+        {
+          return require('../assets/background-dark-no-rain.jpg');
+        }
+        else {
+          return require('../assets/background-light-no-rain.jpg');
+        }
       }
     }
+    else if (colorScheme === 'dark') {
+      return require('../assets/image-dark.png');
+    }
     else {
-      if (weatherData?.type === 'Clouds' || weatherData?.type === 'Rain') {
-        return require('../assets/image-light.png');
-      }
-      else {
-        return require('../assets/background-light-no-rain.jpg');
-      }
+      return require('../assets/image-light.png');
     }
   };
   
@@ -280,7 +291,7 @@ export default function MainScreen({navigation}: {navigation: any}) {
                         marginHorizontal: 12,
                         color: colorScheme == 'dark' ? CombinedDarkTheme.colors.secondary : theme.palettes.secondary[30],
                         }}>
-                          {key}
+                          {key}{weatherData?.country ? ", " + weatherData.country : null}
                       </Text>
                       <IconButton icon={'plus'} size={28} onPress={() => navigation.navigate('AddWeather')} />
                     </View>
@@ -327,9 +338,9 @@ export default function MainScreen({navigation}: {navigation: any}) {
                       ]}>
                         <Text style={[
                           colorScheme == 'dark' ? styles.forecastLargeLabelDark : styles.forecastLargeLabelLight,
-                          {fontSize: 16, marginBottom: 10}
+                          {fontSize: 17, marginBottom: 10}
                         ]}>
-                          Today's forecast:
+                          Forecast:
                         </Text>
 
                         <FlatList
@@ -339,13 +350,14 @@ export default function MainScreen({navigation}: {navigation: any}) {
                               return (
                                 <ForecastWidget
                                   key={index}
+                                  id={forecastData?.list.id[index] ?? 0}
                                   temp={forecastData?.list?.temp[index] ?? ''}
                                   time={forecastData?.list.time[index] ?? ''}
                                   date={forecastData?.list.date[index] ?? ''}
                                   isMetric={weatherData?.isMetric ?? true}
                                   description={forecastData?.list?.description?.[index] ?? ''}
                                   type={forecastData?.list?.type?.[index] ?? ''}
-                                  clouds={forecastData?.list?.clouds?.[index]}
+                                  clouds={forecastData?.list?.clouds?.[index] ?? 0}
                                   rainProbability={forecastData?.list?.rainProbability?.[index]}
                                   windSpeed={forecastData?.list?.windSpeed?.[index]}
                                 />

@@ -1,4 +1,4 @@
-import { apiKey, locationNumLimit, timestamps } from "./consts";
+import { apiKey, locationNumLimit } from "./consts";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
 
@@ -10,6 +10,7 @@ export type currentWeather = {
   type: string;
   description: string;
   city: string;
+  country: string;
   temp: number;
   feelsLike: number;
   humidity: number;
@@ -21,7 +22,7 @@ export type currentWeather = {
   windSpeed: number;
   windDirection?: number;
   clouds?: number;
-  code?: number; // optional
+  id?: number; // optional
   icon?: string;
   errorCode?: number;
   sunrise?: string;
@@ -33,6 +34,7 @@ export type forecast = {
   timestamps?: string;
   isMetric: boolean;
   list: {
+    id: number[];
     time: (string | number)[];
     date: string[];
     temp: number[];
@@ -196,6 +198,7 @@ export const getWeather = async (location: string = '') => {
       type: data.weather[0]?.main,
       description: data.weather[0]?.description,
       city: newLocation?.city ?? 'Unknown',
+      country: data?.sys.country,
       temp: data?.main.temp,
       feelsLike: data?.main.feels_like,
       humidity: data?.main.humidity,
@@ -206,7 +209,7 @@ export const getWeather = async (location: string = '') => {
       windSpeed: data?.wind.speed,
       windDirection: data?.wind.deg,
       clouds: data?.clouds.all,
-      code: data.weather[0]?.id,
+      id: data.weather[0]?.id,
       icon: data.weather[0]?.icon,
       errorCode: data?.cod,
       sunrise: convertTime(data?.sys?.sunrise),
@@ -268,6 +271,7 @@ export async function getForecast(city: string) {
       timestamps: data?.cnt,
       isMetric: units == 'metric' ? true : false,
       list: {
+        id: [],
         time: [],
         date: [],
         temp: [],
@@ -280,6 +284,7 @@ export async function getForecast(city: string) {
     };
 
     data?.list.slice(0, data?.cnt).forEach((item: any) => {
+      forecastData.list?.id.push(item?.weather[0].id);
       forecastData.list?.time.push(convertTime(item?.dt));
       forecastData.list?.date.push(convertDate(item?.dt));
       forecastData.list?.temp.push(item?.main.temp);

@@ -32,7 +32,6 @@ If you found any problems that weren't mentioned in [release notes](https://gith
 
 Here are some planned features and improvements for the Weather App:
 
-- Fix icon choosing algorithm(works properly only with English).
 - Implement search functionality to allow users to search for specific cities.
 - Enhance the UI design for a more visually appealing experience.
 - Improve localization.
@@ -40,6 +39,7 @@ Here are some planned features and improvements for the Weather App:
 - Improve code readability.
 - Improve performance.
 - Add more icons for weather state and wind.
+- Change background images.
 - Improve error handling and error messages.
 
 
@@ -56,6 +56,11 @@ If you'd like to contribute, please follow these steps:
 7. Submit a pull request explaining the changes you've made.
 
 ## Release notes
+
+### v.0.0.5
+- Fixed icon choosing algorithm.
+- More icons added.
+- Country code added to header.
 
 ### v.0.0.4
 - Fixed bug: settings were not loading on app startup.

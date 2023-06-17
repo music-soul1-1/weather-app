@@ -139,18 +139,22 @@ const styles = StyleSheet.create({
     width: 130,
   },
   forecastLargeLabelDark: {
+    textAlign: 'center',
     fontSize: 18,
     color: theme.palettes.secondary[10],
   },
   forecastLargeLabelLight: {
+    textAlign: 'center',
     fontSize: 18,
     color: theme.palettes.secondary[98],
   },
   forecastMeduimLabelDark: {
+    textAlign: 'center',
     fontSize: 14,
     color: theme.palettes.secondary[10],
   },
   forecastMeduimLabelLight: {
+    textAlign: 'center',
     fontSize: 14,
     color: theme.palettes.secondary[98],
   },
